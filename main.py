@@ -20,9 +20,9 @@ class App:
     def on_event(self,event):
         if event.type == pygame.QUIT:
             self._running = False
-        if event.type == pygame.KEYDOWN:
-            self.player.get_move(event.key,self.dt)
-        if event.type == pygame.KEYUP:
+        elif event.type == pygame.KEYDOWN:
+            self.player.get_move(event.key)
+        elif event.type == pygame.KEYUP:
             self.player.stop(event.key)
 
     def on_quit(self):
@@ -36,11 +36,12 @@ class App:
         while (self._running):
             self.dt = self.clock.tick(FPS) / 1000
             self._display_surf.blit(self.player.obscure,self.player.rect)
-            self.player.update(self._display_surf.get_size())
+            self.player.update(self._display_surf.get_size(),self.dt)
             self.render()
             for event in pygame.event.get():
                 self.on_event(event)
         self.on_quit()
+
 
 if __name__ == "__main__":
     theApp = App()
