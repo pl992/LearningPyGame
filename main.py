@@ -1,4 +1,5 @@
 import pygame
+import obstacle
 import player 
 
 FPS = 60
@@ -15,6 +16,7 @@ class App:
 
         pygame.init()
         self.player = player.player(10,10,20)
+        self.obstacle = obstacle.obstacle(50,300,50)
         self.render()
 
     def on_event(self,event):
@@ -30,6 +32,7 @@ class App:
 
     def render(self):
         self._display_surf.blit(self.player.image,self.player.rect)
+        self._display_surf.blit(self.obstacle.image,self.obstacle.rect)
         pygame.display.update()
 
     def on_execute(self):
@@ -37,6 +40,7 @@ class App:
             self.dt = self.clock.tick(FPS) / 1000
             self._display_surf.blit(self.player.obscure,self.player.rect)
             self.player.update(self._display_surf.get_size(),self.dt)
+            self.obstacle.check_collision(self.player)
             self.render()
             for event in pygame.event.get():
                 self.on_event(event)

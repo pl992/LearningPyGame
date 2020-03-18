@@ -23,8 +23,6 @@ class obstacle:
     def check_collision(self,player):
         get_sign = lambda x : -1 if x < 0 else 1
         pos = positions(player)
-        #Everything works only if it's on movement
-        #velocity[0] passes through the obstacle
 
         #Stop right
         if (pos.right <= self.rect.left and
@@ -41,26 +39,28 @@ class obstacle:
             player.rect.left = self.rect.right
             player.velocity[0] = 0
         #Stop top
-        if (pos.top >= self.rect.bottom and
-                pos.next_top < self.rect.bottom and (
-                pos.left >= self.rect.left and 
-                pos.right <= self.rect.right)): 
+        if (
+                pos.top >= self.rect.bottom and
+                pos.next_top < self.rect.bottom and 
+                (
+                    (pos.left > self.rect.left and 
+                     pos.left < self.rect.right) or 
+                    (pos.right > self.rect.left and
+                     pos.right < self.rect.right)
+                )
+            ): 
             player.rect.top = self.rect.bottom
             player.velocity[1] = 0
-        #Stop bottom
-        if (pos.bottom <= self.rect.top and
-                pos.next_bottom > self.rect.top and (
-                pos.left >= self.rect.left and 
-                pos.right <= self.rect.right)): 
+        #Stop bottom 
+        if (
+                pos.bottom <= self.rect.top and
+                pos.next_bottom > self.rect.top and 
+                (
+                    (pos.left > self.rect.left and 
+                     pos.left < self.rect.right) or 
+                    (pos.right > self.rect.left and
+                     pos.right < self.rect.right)
+                )
+            ): 
             player.rect.bottom = self.rect.top
             player.velocity[1] = 0
-        
-        
-#        if (player.rect.left + player.velocity[0] <= self.rect.right and
-#                player.rect.right):
-#            player.rect.left = self.rect.right
-#            player.velocity[0] = 0
-#        if player.rect.right + player.velocity[0] >= self.rect.left:
-#            player.rect.right = self.rect.left
-#            player.velocity[0] = 0
-
