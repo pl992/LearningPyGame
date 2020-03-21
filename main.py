@@ -20,7 +20,7 @@ class App:
         pygame.init()
         self.player = player.player(10,10,20)
         self.objectives = [objectives.objective(random.randint(0,self.weight),random.randint(0,self.height),random.randint(10,50)) for i in range(N_OBJECTIVES)]
-        self.objectives.append(objectives.objective(100,self.height-15,10))
+        self.objectives.append(objectives.objective(100,self.height-50,10))
         self.obstacles = [obstacle.obstacle(random.randint(0,self.weight),random.randint(0,self.height),random.randint(10,50)) for i in range(5)]
         self.score = 0
         self.render()

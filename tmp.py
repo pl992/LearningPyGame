@@ -6,16 +6,16 @@ class objective:
         self.pos = (x,y)
         self.image = pygame.Surface((size,size))
         self.center = (size//2,size//2)
-        self.radius = size//2
+        self.radius = size
         pygame.draw.circle(self.image,(0,255,0),self.center,self.radius)
         self.obscure = pygame.Surface((size,size))
         self.size = size
         self.obscure.fill((0,0,0))
 
-        self.left = self.pos[0] 
-        self.right = self.pos[0] + 2*self.radius
-        self.top = self.pos[1] 
-        self.bottom = self.pos[1] + 2*self.radius
+        self.left = self.pos[0] - self.radius
+        self.right = self.pos[0] + self.radius
+        self.top = self.pos[1] - self.radius
+        self.bottom = self.pos[1] + self.radius
     
     def got_it(self,player):
         corners = [
@@ -33,18 +33,18 @@ class objective:
                 got = True
 
         if self.size < player.size:
-            if player.rect.top <= self.top and player.rect.bottom > self.bottom:
+            if (player.rect.bottom >= self.bottom and player.rect.top > self.top):
                 if (
-                        (player.rect.left > self.left and player.rect.right < self.left) or 
-                        (player.rect.right > self.right and player.rect.left < self.left)
+                        (player.rect.left < self.left and player.rect.right > self.left) or 
+                        (player.rect.left <= self.right and player.rect.right > self.right)
                     ):
                     got = True
-            if player.rect.left <= self.left and player.rect.right > self.right:
-                if (
-                        (player.rect.bottom > self.bottom and player.rect.top < self.top) or 
-                        (player.rect.top > self.top and player.rect.bottom < self.bottom)
-                    ):
-                    got = True
+#            if player.rect.left >= self.left and player.rect.right < self.left:
+#                if (
+#                        (player.rect.bottom > self.bottom and player.rect.top < self.top) or 
+#                        (player.rect.top > self.top and player.rect.bottom < self.bottom)
+#                    ):
+#                    got = True
 
         if got == True:
             self.image = self.obscure
