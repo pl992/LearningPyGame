@@ -18,7 +18,7 @@ class obstacle:
         self.obscure = pygame.Surface((size,size))
         self.size = size
         self.obscure.fill((0,0,0))
-        self.image.fill((255,255,255))
+        self.image.fill((255,0,0))
 
     def check_collision(self,player):
         get_sign = lambda x : -1 if x < 0 else 1

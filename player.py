@@ -81,4 +81,3 @@ class player:
             self.moving[0] = False
         if key == pygame.K_d:
             self.moving[1] = False
-

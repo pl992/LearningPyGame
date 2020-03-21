@@ -1,8 +1,11 @@
 import pygame
+import random
 import obstacle
 import player 
+import objectives
 
 FPS = 60
+N_OBJECTIVES = 5
 
 class App:
     def __init__(self):
@@ -16,7 +19,10 @@ class App:
 
         pygame.init()
         self.player = player.player(10,10,20)
-        self.obstacle = obstacle.obstacle(50,300,50)
+        self.objectives = [objectives.objective(random.randint(0,self.weight),random.randint(0,self.height),random.randint(10,50)) for i in range(N_OBJECTIVES)]
+        self.objectives.append(objectives.objective(100,self.height-15,10))
+        self.obstacles = [obstacle.obstacle(random.randint(0,self.weight),random.randint(0,self.height),random.randint(10,50)) for i in range(5)]
+        self.score = 0
         self.render()
 
     def on_event(self,event):
@@ -31,17 +37,32 @@ class App:
         pygame.quit()
 
     def render(self):
+        for i in self.objectives:
+            self._display_surf.blit(i.image,i.pos)
         self._display_surf.blit(self.player.image,self.player.rect)
-        self._display_surf.blit(self.obstacle.image,self.obstacle.rect)
+        for i in self.obstacles:
+            self._display_surf.blit(i.image,i.rect)
         pygame.display.update()
 
     def on_execute(self):
-        while (self._running):
+        while (self._running) and (self.score <= N_OBJECTIVES):
             self.dt = self.clock.tick(FPS) / 1000
             self._display_surf.blit(self.player.obscure,self.player.rect)
             self.player.update(self._display_surf.get_size(),self.dt)
-            self.obstacle.check_collision(self.player)
+            
+
+            objective_del = -1
+            for i,obj in enumerate(self.objectives):
+                if obj.got_it(self.player):
+                    self.score += 1
+                    objective_del = i
+
+
+            for i in self.obstacles:
+                i.check_collision(self.player)
             self.render()
+            if not objective_del == -1:
+                del self.objectives[objective_del]
             for event in pygame.event.get():
                 self.on_event(event)
         self.on_quit()
