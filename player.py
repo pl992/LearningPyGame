@@ -68,7 +68,7 @@ class player:
             self.rect.left = self.velocity[0]
         elif self.rect.right + self.velocity[0] < 0:
             self.rect.right = screen_size[0] + self.velocity[0]
-        elif self.rect.top + self.velocity[1] > screen_size[1]:
+        elif self.rect.bottom + self.velocity[1] >= screen_size[1]:
             self.rect.bottom = screen_size[1]
             self.velocity[1] = 0
             self.falling = False

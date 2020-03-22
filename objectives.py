@@ -33,17 +33,26 @@ class objective:
                 got = True
 
         if self.size < player.size:
-            if player.rect.top <= self.top and player.rect.bottom > self.bottom:
+            if player.rect.top <= self.top and player.rect.bottom >= self.bottom:
                 if (
-                        (player.rect.left > self.left and player.rect.right < self.left) or 
-                        (player.rect.right > self.right and player.rect.left < self.left)
+                        (player.rect.left >= self.left and player.rect.right <= self.left) or 
+                        (player.rect.right >= self.right and player.rect.left <= self.left)
                     ):
                     got = True
-            if player.rect.left <= self.left and player.rect.right > self.right:
+            if player.rect.left <= self.left and player.rect.right >= self.right:
                 if (
-                        (player.rect.bottom > self.bottom and player.rect.top < self.top) or 
-                        (player.rect.top > self.top and player.rect.bottom < self.bottom)
+                        (player.rect.bottom >= self.bottom and player.rect.top <= self.top) or 
+                        (player.rect.top >= self.top and player.rect.bottom <= self.bottom)
                     ):
+                    got = True
+        else:
+            if ( (player.rect.bottom >= self.top and player.rect.top <= self.top) or
+                    (player.rect.top <= self.bottom and player.rect.bottom >= self.bottom)
+               ):
+                if (
+                        (player.rect.right >= self.left and player.rect.left < self.left) or 
+                        (player.rect.left <= self.right and self.right > self.right)
+                   ):
                     got = True
 
         if got == True:
