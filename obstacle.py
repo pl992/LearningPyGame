@@ -13,9 +13,9 @@ class positions:
 
 class obstacle:
     def __init__(self,x,y,size):
-        self.rect = pygame.Rect((x,y),(size,size))
-        self.image = pygame.Surface((size,size))
-        self.obscure = pygame.Surface((size,size))
+        self.rect = pygame.Rect((x,y),size)
+        self.image = pygame.Surface(size)
+        self.obscure = pygame.Surface(size)
         self.size = size
         self.obscure.fill((0,0,0))
         self.image.fill((255,0,0))
@@ -25,69 +25,72 @@ class obstacle:
         pos = positions(player)
 
         #Stop right
-        if self.size > player.size:
-            if (pos.right <= self.rect.left and
-                    pos.next_right > self.rect.left and (
-                    pos.bottom >= self.rect.top and 
-                    pos.top <= self.rect.bottom)): 
+        if (pos.right <= self.rect.left and
+                pos.next_right > self.rect.left):
+            if (
+                    (
+                        pos.bottom >= self.rect.top and 
+                        pos.top <= self.rect.bottom
+                    ) or
+                    (
+                        pos.bottom >= self.rect.bottom and
+                        pos.top <= self.rect.top
+                    )
+                ): 
                 player.rect.right = self.rect.left
                 player.velocity[0] = 0
-            #Stop left
-            if (pos.left >= self.rect.right and
-                    pos.next_left < self.rect.right and (
-                    pos.bottom >= self.rect.top and 
-                    pos.top <= self.rect.bottom)): 
+        #Stop left
+        if (pos.left >= self.rect.right and
+                pos.next_left < self.rect.right):
+            if (
+                    (
+                        pos.bottom >= self.rect.top and 
+                        pos.top <= self.rect.bottom 
+                    ) or
+                    (
+                        pos.bottom >= self.rect.bottom and
+                        pos.top <= self.rect.top
+                    )
+                ):
                 player.rect.left = self.rect.right
                 player.velocity[0] = 0
-            #Stop top
+        #Stop top
+        if (
+                pos.top < self.rect.bottom and
+                pos.bottom > self.rect.bottom):
             if (
-                    pos.top < self.rect.bottom and
-                    pos.bottom > self.rect.bottom):
-                if (
-                        (
-                            pos.left > self.rect.left and 
-                             pos.left < self.rect.right
-                        ) or
-                        (
-                            pos.right > self.rect.left and
-                             pos.right < self.rect.right
-                        )
-                    ):
-                    player.rect.top = self.rect.bottom
-                    player.velocity[1] = 0
-            #Stop bottom 
-            if (
-                    pos.bottom <= self.rect.top and
-                    pos.next_bottom > self.rect.top
+                    (
+                        pos.left > self.rect.left and 
+                        pos.left < self.rect.right
+                    ) or
+                    (
+                        pos.right > self.rect.left and
+                        pos.right < self.rect.right
+                    )or
+                    (
+                        pos.left <= self.rect.left and 
+                        pos.right >= self.rect.right
+                    )
                 ):
-                    if (
-                        (pos.left > self.rect.left and 
-                         pos.left < self.rect.right) or 
-                        (pos.right > self.rect.left and
-                         pos.right < self.rect.right)
-                        ):
-                        player.rect.bottom = self.rect.top
-                        player.velocity[1] = 0
-        else:
+                player.rect.top = self.rect.bottom
+                player.velocity[1] = 0
+        #Stop bottom 
+        if (
+                pos.bottom <= self.rect.top and
+                pos.next_bottom > self.rect.top
+            ):
             if (
-                    (pos.right > self.rect.left and pos.left < self.rect.left)
-                    or
-                    (pos.left < self.rect.right and pos.right > self.rect.right)
+                (
+                    pos.left > self.rect.left and 
+                    pos.left < self.rect.right) or 
+                (
+                    pos.right > self.rect.left and
+                    pos.right < self.rect.right
+                ) or
+                (
+                    pos.left <= self.rect.left and 
+                    pos.right >= self.rect.right
+                )
                 ):
-                if (pos.next_top <= self.rect.bottom and pos.top >= self.rect.bottom):
-                    player.rect.top = self.rect.bottom
-                    player.velocity[1] = 0
-                elif (pos.next_bottom >= self.rect.top and pos.bottom <= self.rect.top):
-                    player.rect.bottom = self.rect.top
-                    player.velocity[1] = 0
-            if (
-                    (pos.top < self.rect.bottom and pos.bottom > self.rect.bottom)
-                    or
-                    (pos.bottom > self.rect.top and pos.top < self.rect.top)
-                ):
-                if (pos.next_right >= self.rect.left and pos.right <= self.rect.left):
-                    player.rect.right = self.rect.left
-                    player.velocity[0] = 0
-                elif (pos.next_left <= self.rect.right and pos.left >= self.rect.left):
-                    player.rect.left = self.rect.right
-                    player.velocity[0] = 0
+                player.rect.bottom = self.rect.top
+                player.velocity[1] = 0
