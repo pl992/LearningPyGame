@@ -1,3 +1,4 @@
+from init import *
 import pygame
 import random
 import obstacle
